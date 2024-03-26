@@ -5,10 +5,18 @@ import time
 from bs4 import BeautifulSoup
 
 SCRAPE_URL = "https://www.goodreads.com/book/show/"
+NDJSON_FILE_PATH = "./books/books.ndjson"
 
+def check_legacy_id_in_ndjson(legacy_id, NDJSON_FILE_PATH):
+    with open(NDJSON_FILE_PATH, "r", encoding="utf-8") as file:
+        for line in file:
+            book = json.loads(line)
+            if str(book.get("legacyId")) == str(legacy_id):
+                return True
+    return False
 
-def scrape_goodreads_book(book_id):
-    url = f"{SCRAPE_URL}{book_id}"
+def scrape_goodreads_book(legacy_id):
+    url = f"{SCRAPE_URL}{legacy_id}"
     try:
         response = requests.get(url, timeout=30)
         if response.status_code == 200:
@@ -20,7 +28,7 @@ def scrape_goodreads_book(book_id):
                 apollo_state = (
                     data.get("props", {}).get("pageProps", {}).get("apolloState", {})
                 )
-                legacy_query = f'getBookByLegacyId({{"legacyId":"{book_id}"}})'
+                legacy_query = f'getBookByLegacyId({{"legacyId":"{legacy_id}"}})'
                 book_ref = (
                     apollo_state.get("ROOT_QUERY", {})
                     .get(legacy_query, {})
@@ -95,37 +103,37 @@ def scrape_goodreads_book(book_id):
                     if not os.path.exists("./books"):
                         os.makedirs("./books")
 
-                    with open(f"./books/{book_id}.json", "w", encoding="utf-8") as file:
-                        json.dump(book_info, file, ensure_ascii=False, indent=2)
+                    with open("./books/books.ndjson", "a", encoding="utf-8") as file:
+                        file.write(json.dumps(book_info, ensure_ascii=False) + "\n")
+
 
                     return book_info
                 else:
-                    print(f"Reference to book details not found for book ID {book_id}.")
+                    print(f"Reference to book details not found for Legacy ID {legacy_id}.")
                     return None
             else:
-                print(f"JSON data not found for book ID {book_id}.")
+                print(f"JSON data not found for Legacy ID {legacy_id}.")
                 return None
         else:
             print(
-                f"Failed to retrieve book page for book ID {book_id} with status code {response.status_code}"
+                f"Failed to retrieve book page for Legacy ID {legacy_id} with status code {response.status_code}"
             )
             return None
     except requests.exceptions.Timeout:
-        print(f"Request timed out for book ID {book_id}")
+        print(f"Request timed out for Legacy ID {legacy_id}")
         return None
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
 
-
-for book_id in range(1, int(1e6)):
-    if not os.path.exists(f"./books/{book_id}.json"):
-        print(f"Scraping book ID {book_id}...")
-        book_info = scrape_goodreads_book(book_id)
+for legacy_id in range(1, int(1e6)):
+    if not check_legacy_id_in_ndjson(legacy_id, NDJSON_FILE_PATH):
+        print(f"Scraping Legacy ID {legacy_id}...")
+        book_info = scrape_goodreads_book(legacy_id)
         if book_info:
-            print(f"Successfully scraped book ID {book_id}")
+            print(f"Successfully scraped Legacy ID {legacy_id}")
             wait_time_sec = 10
             print(f"Waiting {wait_time_sec} seconds before the next request...")
             time.sleep(wait_time_sec)
     else:
-        print(f"Book ID {book_id} already scraped. Skipping...")
+        print(f"Legacy ID {legacy_id} already scraped. Skipping...")
