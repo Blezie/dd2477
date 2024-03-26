@@ -1,0 +1,34 @@
+{
+  "id": "kca://book/amzn1.gr.book.v1.CGMNPoT5UIW4vktHBst-MQ",
+  "type": "Book",
+  "legacyId": 8,
+  "webUrl": "https://www.goodreads.com/book/show/8.Harry_Potter_Boxed_Set_Books_1_5",
+  "title": "Harry Potter Boxed Set, Books 1-5",
+  "titleComplete": "Harry Potter Boxed Set, Books 1-5 (Harry Potter, #1-5)",
+  "description": "Box Set containing Harry Potter and the Sorcerer's Stone, Harry Potter and the Chamber Of Secrets, Harry Potter and the Prisoner of Azkaban, Harry Potter and the Goblet Of Fire, and Harry Potter and the Order of the Phoenix!",
+  "author": "J.K. Rowling",
+  "genres": [
+    "Fantasy",
+    "Young Adult",
+    "Fiction",
+    "Magic",
+    "Adventure",
+    "Supernatural",
+    "Childrens",
+    "Mystery",
+    "Middle Grade",
+    "Paranormal"
+  ],
+  "language": "English",
+  "numPages": 2690,
+  "averageRating": 4.72,
+  "ratingsCount": 145054,
+  "ratingsCountDist": [
+    1802,
+    1281,
+    5344,
+    19227,
+    117400
+  ],
+  "textReviewsCount": 306
+}

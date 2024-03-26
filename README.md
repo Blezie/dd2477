@@ -10,3 +10,10 @@ In this project the task is to:
 - Get information from the user about her previously read books. 
 - When given a query, e.g., “romance”, “adventure”, or “dragons and trolls”, generate recommendations for new books, using the query + the information about the user, the books, and their reviews. 
 - Provide recommendations with short descriptions of the books.
+
+# Scraper for GoodReads
+```js
+pip install requests beautifulsoup4 
+```
+
+python main.py

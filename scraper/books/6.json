@@ -1,0 +1,34 @@
+{
+  "id": "kca://book/amzn1.gr.book.v1.Qtinlqa0DGyf_iLtfFVrCQ",
+  "type": "Book",
+  "legacyId": 6,
+  "webUrl": "https://www.goodreads.com/book/show/6.Harry_Potter_and_the_Goblet_of_Fire",
+  "title": "Harry Potter and the Goblet of Fire",
+  "titleComplete": "Harry Potter and the Goblet of Fire (Harry Potter, #4)",
+  "description": "It is the summer holidays and soon Harry Potter will be starting his fourth year at Hogwarts School of Witchcraft and Wizardry. Harry is counting the days: there are new spells to be learnt, more Quidditch to be played, and Hogwarts castle to continue exploring. But Harry needs to be careful - there are unexpected dangers lurking...",
+  "author": "J.K. Rowling",
+  "genres": [
+    "Fantasy",
+    "Young Adult",
+    "Fiction",
+    "Magic",
+    "Childrens",
+    "Audiobook",
+    "Middle Grade",
+    "Adventure",
+    "Classics",
+    "Science Fiction Fantasy"
+  ],
+  "language": "English",
+  "numPages": 734,
+  "averageRating": 4.57,
+  "ratingsCount": 3680502,
+  "ratingsCountDist": [
+    20236,
+    37894,
+    257247,
+    890567,
+    2474558
+  ],
+  "textReviewsCount": 68921
+}

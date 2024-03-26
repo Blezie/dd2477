@@ -1,0 +1,34 @@
+{
+  "id": "kca://book/amzn1.gr.book.v1.L9KPn9NQyHxsNneS-mDWAg",
+  "type": "Book",
+  "legacyId": 1,
+  "webUrl": "https://www.goodreads.com/book/show/1.Harry_Potter_and_the_Half_Blood_Prince",
+  "title": "Harry Potter and the Half-Blood Prince",
+  "titleComplete": "Harry Potter and the Half-Blood Prince (Harry Potter, #6)",
+  "description": "It is the middle of the summer, but there is an unseasonal mist pressing against the windowpanes. Harry Potter is waiting nervously in his bedroom at the Dursleys' house in Privet Drive for a visit from Professor Dumbledore himself. One of the last times he saw the Headmaster, he was in a fierce one-to-one duel with Lord Voldemort, and Harry can't quite believe that Professor Dumbledore will actually appear at the Dursleys' of all places. Why is the Professor coming to visit him now? What is it that cannot wait until Harry returns to Hogwarts in a few weeks' time? Harry's sixth year at Hogwarts has already got off to an unusual start, as the worlds of Muggle and magic start to intertwine...",
+  "author": "J.K. Rowling",
+  "genres": [
+    "Fantasy",
+    "Young Adult",
+    "Fiction",
+    "Magic",
+    "Childrens",
+    "Audiobook",
+    "Adventure",
+    "Middle Grade",
+    "Classics",
+    "Science Fiction Fantasy"
+  ],
+  "language": "English",
+  "numPages": 652,
+  "averageRating": 4.58,
+  "ratingsCount": 3263401,
+  "ratingsCountDist": [
+    17396,
+    35576,
+    218032,
+    768334,
+    2224063
+  ],
+  "textReviewsCount": 57498
+}
