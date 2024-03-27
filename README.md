@@ -11,7 +11,7 @@ In this project the task is to:
 - When given a query, e.g., “romance”, “adventure”, or “dragons and trolls”, generate recommendations for new books, using the query + the information about the user, the books, and their reviews. 
 - Provide recommendations with short descriptions of the books.
 
-## Scraper for GoodReads
+## Scraper for GoodReads (locally, not connected with elasticsearch)
 ### How to run
 ```bash
 cd ./scraper
@@ -20,5 +20,5 @@ cd ./scraper
 pip install requests beautifulsoup4 
 ```
 ```bash
-python main.py
+python oldscraper.py
 ```
