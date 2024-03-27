@@ -13,18 +13,6 @@ In this project the task is to:
 
 ## Scraper
 
-#### Scraper for GoodReads (locally)
-##### How to run:
-```bash
-cd ./scraper
-```
-```bash
-pip install requests beautifulsoup4 
-```
-```bash
-python oldscraper.py
-```
-
 #### Scraper for GoodReads (elasticsearch)
 ##### How to run:
 ```bash
