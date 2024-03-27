@@ -14,12 +14,6 @@ WAIT_BETWEEN_REQUESTS = 2
 
 client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, ca_certs=ELASTIC_CERTS)
 
-try:
-    client.info()
-except Exception as e:
-    print(f"Failed to connect to Elasticsearch: {e}")
-    exit(1)
-
 
 def book_exists_in_ndjson(legacy_id):
     with open("./books/books.ndjson", "r", encoding="utf-8") as file:
@@ -171,15 +165,12 @@ def scrape_goodreads_book(legacy_id, store="local"):
 
 def main(store):
     for legacy_id in range(1, int(1e6)):
-        exists_local = book_exists_in_ndjson(legacy_id)
-        exists_elastic = book_exists_in_elasticsearch(legacy_id)
-
-        if store == "local" and not exists_local:
+        if store == "local" and not book_exists_in_ndjson(legacy_id):
             print(f"Scraping Legacy ID {legacy_id} to local...")
             book_info = scrape_goodreads_book(legacy_id, store="local")
             if book_info:
                 print(f"Successfully scraped Legacy ID {legacy_id} locally.")
-        elif store == "elastic" and not exists_elastic:
+        elif store == "elastic" and not book_exists_in_elasticsearch(legacy_id):
             print(f"Scraping Legacy ID {legacy_id} to Elasticsearch...")
             book_info = scrape_goodreads_book(legacy_id, store="elastic")
             if book_info:
@@ -205,6 +196,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.store:
+        if args.store == "elastic":
+            try:
+                client.info()
+            except Exception as e:
+                print(f"Failed to connect to Elasticsearch: {e}")
+                exit(1)
         main(args.store)
     else:
         print(
