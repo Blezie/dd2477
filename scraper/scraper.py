@@ -1,21 +1,55 @@
+import argparse
 import requests
 import json
 import os
 import time
 from bs4 import BeautifulSoup
+from elasticsearch import Elasticsearch
 
 SCRAPE_URL = "https://www.goodreads.com/book/show/"
-NDJSON_FILE_PATH = "./books/books.ndjson"
+ELASTIC_API_KEY = "SmtaMWZZNEIzTENBN1NSbFV4MnI6QWpDZTgwUzVUcU9YSGlVZzU5Q18zZw=="
+ELASTIC_URL = "https://localhost:9200"
+ELASTIC_CERTS = "./http_ca.crt" # Path to the CA certificate from Elasicsearch
+WAIT_BETWEEN_REQUESTS = 2
 
-def check_legacy_id_in_ndjson(legacy_id, NDJSON_FILE_PATH):
-    with open(NDJSON_FILE_PATH, "r", encoding="utf-8") as file:
+client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, ca_certs=ELASTIC_CERTS)
+
+try:
+    client.info()
+except Exception as e:
+    print(f"Failed to connect to Elasticsearch: {e}")
+    exit(1)
+
+def book_exists_in_ndjson(legacy_id):
+    with open("./books/books.ndjson", "r", encoding="utf-8") as file:
         for line in file:
             book = json.loads(line)
             if str(book.get("legacyId")) == str(legacy_id):
                 return True
     return False
 
-def scrape_goodreads_book(legacy_id):
+
+def book_exists_in_elasticsearch(legacy_id):
+    try:
+        ans = client.exists(index="books", id=str(legacy_id)) 
+        print(ans)
+        return ans 
+    except Exception as e:
+        print(f"Error checking book existence in Elasticsearch: {e}")
+        return False
+
+
+def index_book_in_elasticsearch(book_info):
+    try:
+        response = client.index(
+            index="books", id=str(book_info["legacyId"]), body=book_info
+        )
+        print(f"Book indexed with response: {response}")
+    except Exception as e:
+        print(f"Error indexing book: {e}")
+
+
+def scrape_goodreads_book(legacy_id, store="local"):
     url = f"{SCRAPE_URL}{legacy_id}"
     try:
         response = requests.get(url, timeout=30)
@@ -100,16 +134,23 @@ def scrape_goodreads_book(legacy_id):
                         "textReviewsCount": textReviewsCount,
                     }
 
-                    if not os.path.exists("./books"):
-                        os.makedirs("./books")
-
-                    with open("./books/books.ndjson", "a", encoding="utf-8") as file:
-                        file.write(json.dumps(book_info, ensure_ascii=False) + "\n")
-
+                    if store == "elastic":
+                        # Index book in Elasticsearch
+                        index_book_in_elasticsearch(book_info)
+                    elif store == "local":
+                        # Save book info to NDJSON file
+                        if not os.path.exists("./books"):
+                            os.makedirs("./books")
+                        with open(
+                            "./books/books.ndjson", "a", encoding="utf-8"
+                        ) as file:
+                            file.write(json.dumps(book_info, ensure_ascii=False) + "\n")
 
                     return book_info
                 else:
-                    print(f"Reference to book details not found for Legacy ID {legacy_id}.")
+                    print(
+                        f"Reference to book details not found for Legacy ID {legacy_id}."
+                    )
                     return None
             else:
                 print(f"JSON data not found for Legacy ID {legacy_id}.")
@@ -126,14 +167,43 @@ def scrape_goodreads_book(legacy_id):
         print(f"An error occurred: {e}")
         return None
 
-for legacy_id in range(1, int(1e6)):
-    if not check_legacy_id_in_ndjson(legacy_id, NDJSON_FILE_PATH):
-        print(f"Scraping Legacy ID {legacy_id}...")
-        book_info = scrape_goodreads_book(legacy_id)
-        if book_info:
-            print(f"Successfully scraped Legacy ID {legacy_id}")
-            wait_time_sec = 2
-            print(f"Waiting {wait_time_sec} seconds before the next request...")
-            time.sleep(wait_time_sec)
+
+def main(store):
+    for legacy_id in range(1, int(1e6)):
+        exists_local = book_exists_in_ndjson(legacy_id)
+        exists_elastic = book_exists_in_elasticsearch(legacy_id)
+    
+        if store == "local" and not exists_local:
+            print(f"Scraping Legacy ID {legacy_id} to local...")
+            book_info = scrape_goodreads_book(legacy_id, store="local")
+            if book_info:
+                print(f"Successfully scraped Legacy ID {legacy_id} locally.")
+        elif store == "elastic" and not exists_elastic:
+            print(f"Scraping Legacy ID {legacy_id} to Elasticsearch...")
+            book_info = scrape_goodreads_book(legacy_id, store="elastic")
+            if book_info:
+                print(f"Successfully scraped Legacy ID {legacy_id} to Elasticsearch.")
+        else:
+            print(f"Legacy ID {legacy_id} already exists in {store}. Skipping...")
+            continue
+
+        print(f"Waiting {WAIT_BETWEEN_REQUESTS} seconds before the next request...")
+        time.sleep(WAIT_BETWEEN_REQUESTS)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Scrape book data to local or Elasticsearch."
+    )
+    parser.add_argument(
+        "--store",
+        type=str,
+        choices=["local", "elastic"],
+        help="Where to store the scraped data. Options: local, elastic.",
+    )
+    args = parser.parse_args()
+
+    if args.store:
+        main(args.store)
     else:
-        print(f"Legacy ID {legacy_id} already scraped. Skipping...")
+        print("No --store option was provided. Use --store local, --store elastic to specify where to store the scraped data.")
