@@ -34,5 +34,5 @@ cd ./scraper
 pip install requests python-dotenv beautifulsoup4 elasticsearch
 ```
 ```bash
-python scraper.py --<option> #option: local | elastic
+python scraper.py --store <option> #option: local | elastic
 ```
