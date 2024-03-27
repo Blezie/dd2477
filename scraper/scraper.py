@@ -3,16 +3,18 @@ import requests
 import json
 import os
 import time
+from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 from elasticsearch import Elasticsearch
 
-SCRAPE_URL = "https://www.goodreads.com/book/show/"
-ELASTIC_API_KEY = "SmtaMWZZNEIzTENBN1NSbFV4MnI6QWpDZTgwUzVUcU9YSGlVZzU5Q18zZw=="
-ELASTIC_URL = "https://localhost:9200"
-ELASTIC_CERTS = "./http_ca.crt"  # Path to the CA certificate from Elasicsearch
-WAIT_BETWEEN_REQUESTS = 2
+load_dotenv()
 
-client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, ca_certs=ELASTIC_CERTS)
+SCRAPE_URL = "https://www.goodreads.com/book/show/"
+WAIT_BETWEEN_REQUESTS = 3
+ELASTIC_API_KEY = os.getenv("ELASTIC_API_KEY")
+ELASTIC_URL = os.getenv("ELASTIC_URL")
+
+client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, verify_certs=False)
 
 
 def book_exists_in_ndjson(legacy_id):
@@ -27,7 +29,6 @@ def book_exists_in_ndjson(legacy_id):
 def book_exists_in_elasticsearch(legacy_id):
     try:
         ans = client.exists(index="books", id=str(legacy_id))
-        print(ans)
         return ans
     except Exception as e:
         print(f"Error checking book existence in Elasticsearch: {e}")
