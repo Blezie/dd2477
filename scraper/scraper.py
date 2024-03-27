@@ -9,7 +9,7 @@ from elasticsearch import Elasticsearch
 SCRAPE_URL = "https://www.goodreads.com/book/show/"
 ELASTIC_API_KEY = "SmtaMWZZNEIzTENBN1NSbFV4MnI6QWpDZTgwUzVUcU9YSGlVZzU5Q18zZw=="
 ELASTIC_URL = "https://localhost:9200"
-ELASTIC_CERTS = "./http_ca.crt" # Path to the CA certificate from Elasicsearch
+ELASTIC_CERTS = "./http_ca.crt"  # Path to the CA certificate from Elasicsearch
 WAIT_BETWEEN_REQUESTS = 2
 
 client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, ca_certs=ELASTIC_CERTS)
@@ -19,6 +19,7 @@ try:
 except Exception as e:
     print(f"Failed to connect to Elasticsearch: {e}")
     exit(1)
+
 
 def book_exists_in_ndjson(legacy_id):
     with open("./books/books.ndjson", "r", encoding="utf-8") as file:
@@ -31,9 +32,9 @@ def book_exists_in_ndjson(legacy_id):
 
 def book_exists_in_elasticsearch(legacy_id):
     try:
-        ans = client.exists(index="books", id=str(legacy_id)) 
+        ans = client.exists(index="books", id=str(legacy_id))
         print(ans)
-        return ans 
+        return ans
     except Exception as e:
         print(f"Error checking book existence in Elasticsearch: {e}")
         return False
@@ -172,7 +173,7 @@ def main(store):
     for legacy_id in range(1, int(1e6)):
         exists_local = book_exists_in_ndjson(legacy_id)
         exists_elastic = book_exists_in_elasticsearch(legacy_id)
-    
+
         if store == "local" and not exists_local:
             print(f"Scraping Legacy ID {legacy_id} to local...")
             book_info = scrape_goodreads_book(legacy_id, store="local")
@@ -206,4 +207,6 @@ if __name__ == "__main__":
     if args.store:
         main(args.store)
     else:
-        print("No --store option was provided. Use --store local, --store elastic to specify where to store the scraped data.")
+        print(
+            "No --store option was provided. Use --store local, --store elastic to specify where to store the scraped data."
+        )
