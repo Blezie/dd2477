@@ -4,6 +4,7 @@
 
 {% block content %}
     <h1 class="center">Search</h1>
+    
     <form class="center" action="/search" method="post">
         <input type="text" name="query" placeholder="Enter search query" required>
         <select name="option">
@@ -13,4 +14,6 @@
         </select>
         <button type="submit">Search</button>
     </form>
+
+    <p class="center">Total number of books: {{ num_books }}</p>
 {% endblock %}

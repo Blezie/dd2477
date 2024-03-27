@@ -5,6 +5,7 @@
 {% block content %}
     <h1>Search Results for "{{ query }}" with "{{ option }}":</h1>
     {% if results %}
+        <p>Number of results: {{ num_results }}</p>
         <ul>
         {% for result in results %}
             <li>

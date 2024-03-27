@@ -15,7 +15,9 @@ es_client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, verify_certs=Fal
 
 @app.route('/')
 def home():
-    return render_template('search.html')
+    num_books = es_client.count(index='books')['count']
+
+    return render_template('search.html', num_books=num_books)
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -31,6 +33,7 @@ def search():
 
     response = es_client.search(index="books", body=body)
     results = [hit["_source"] for hit in response['hits']['hits']]
+    num_results = len(results)
 
     # for book in results:
     #     print(f"Book ID: {book['legacyId']}")
@@ -42,7 +45,7 @@ def search():
     #     print(f"Average Rating: {book.get('averageRating', 'N/A')}")
     #     print("-" * 40)
 
-    return render_template('results.html', query=query, option=option, results=results)
+    return render_template('results.html', query=query, option=option, results=results, num_results=num_results)
 
 
 def option1(query):
@@ -74,7 +77,7 @@ def option3(query):
         "query": {
             "match_all": {}
         },
-        "size": 10
+        "size": 100
     }
     return body
 
