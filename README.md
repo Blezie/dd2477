@@ -36,3 +36,18 @@ pip install requests python-dotenv beautifulsoup4 elasticsearch
 ```bash
 python scraper.py --store <option> #option: local | elastic
 ```
+
+## Frontend
+
+##### How to run:
+```bash
+cd ./frontend
+```
+```bash
+pip install Flask python-dotenv elasticsearch 
+```
+```bash
+python app.py
+```
+
+The frontend can now be viewed at: [http://127.0.0.1:5000](http://127.0.0.1:5000)
