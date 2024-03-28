@@ -20,7 +20,7 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elastics
 https://www.elastic.co/guide/en/kibana/current/install.html
 
 #### Create API index in Kibana for books:
-##### Create API Index
+##### Create API Index:
 * Go to http://localhost:5601/app/enterprise_search/overview in your web browser.
 * Click on "Create API index".
 * Set the index name to "books".
@@ -32,7 +32,7 @@ https://www.elastic.co/guide/en/kibana/current/install.html
 * Remember to save the generated API key.
 * Create ".env" file in the root folder.
 * Update it with the API key you saved from the previous step.
-ELASTIC_API_KEY=your_api_key
+ELASTIC_API_KEY=your_generated_api_key
 ELASTIC_URL=https://localhost:9200
 ##### Configure TLS/SSL:
 * Copy the http_ca.crt certificate file located in \elasticsearch-8.13.0\config\certs\. 
