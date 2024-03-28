@@ -1,0 +1,5 @@
+# Ignore http_ca.crt
+http_ca.crt
+
+# Ignore .env
+.env

@@ -10,11 +10,11 @@ from elasticsearch import Elasticsearch
 load_dotenv()
 
 SCRAPE_URL = "https://www.goodreads.com/book/show/"
-WAIT_BETWEEN_REQUESTS = 3
+WAIT_BETWEEN_REQUESTS = 1
 ELASTIC_API_KEY = os.getenv("ELASTIC_API_KEY")
 ELASTIC_URL = os.getenv("ELASTIC_URL")
 
-client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, verify_certs=False)
+client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, ca_certs="../http_ca.crt")
 
 
 def book_exists_in_ndjson(legacy_id):

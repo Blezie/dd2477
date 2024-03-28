@@ -10,7 +10,7 @@ app = Flask(__name__)
 ELASTIC_API_KEY = os.getenv("ELASTIC_API_KEY")
 ELASTIC_URL = os.getenv("ELASTIC_URL")
 
-es_client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, verify_certs=False)
+es_client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, ca_certs="../http_ca.crt")
 
 
 @app.route('/')
@@ -35,6 +35,7 @@ def search():
     results = [hit["_source"] for hit in response['hits']['hits']]
     num_results = len(results)
 
+    # Debug - print book results in the console
     # for book in results:
     #     print(f"Book ID: {book['legacyId']}")
     #     print(f"Title: {book['title']}")
