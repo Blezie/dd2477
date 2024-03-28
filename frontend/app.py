@@ -10,12 +10,12 @@ app = Flask(__name__)
 ELASTIC_API_KEY = os.getenv("ELASTIC_API_KEY")
 ELASTIC_URL = os.getenv("ELASTIC_URL")
 
-es_client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, ca_certs="../http_ca.crt")
+client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, ca_certs="../http_ca.crt")
 
 
 @app.route('/')
 def home():
-    num_books = es_client.count(index='books')['count']
+    num_books = client.count(index='books')['count']
 
     return render_template('search.html', num_books=num_books)
 
@@ -31,7 +31,7 @@ def search():
     elif (option == 'option3'):
         body = option3(query)
 
-    response = es_client.search(index="books", body=body)
+    response = client.search(index="books", body=body)
     results = [hit["_source"] for hit in response['hits']['hits']]
     num_results = len(results)
 
@@ -84,4 +84,4 @@ def option3(query):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
