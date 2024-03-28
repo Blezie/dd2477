@@ -3,17 +3,18 @@
 {% block title %}Search{% endblock %}
 
 {% block content %}
-    <h1 class="center">Search</h1>
-    
-    <form class="center" action="/search" method="post">
-        <input type="text" name="query" placeholder="Enter search query" required>
-        <select name="option">
-            <option value="option1">Option1</option>
-            <option value="option2">Option2</option>
-            <option value="option3">Option3</option>
-        </select>
-        <button type="submit">Search</button>
-    </form>
-
-    <p class="center">Total number of books: {{ num_books }}</p>
+    <div class="container">
+        <h1 class="center">Search</h1>
+        
+        <form class="center" action="/search" method="post">
+            <input type="text" name="query" placeholder="Enter search query" required>
+            <select name="option">
+                <option value="option1">Option1</option>
+                <option value="option2">Option2</option>
+                <option value="option3">Option3</option>
+            </select>
+            <button type="submit">Search</button>
+        </form>
+        <p class="center">Total number of books: {{ num_books }}</p>
+    </div>
 {% endblock %}

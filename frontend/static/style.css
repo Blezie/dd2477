@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 20px;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #ffff;
 }
 h1 {
     color: #333;
@@ -67,4 +67,10 @@ select {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+}
+.container {
+    max-width: 800px;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px;
 }
