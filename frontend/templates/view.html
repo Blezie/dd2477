@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}View Result{% endblock %}
+
+{% block content %}
+    <h1>View Result</h1>
+    {% if book %}
+        <a href="/">New search</a>
+        <ul>
+        <li>
+            <strong>{{ book['title'] }}</strong>
+            <p>{{ book['description'] }}</p>
+            <p>Book ID: {{ book['legacyId'] }}</p>
+            <p>Genres: {{', '.join(book.get('genres'))}}</p>
+            <p>Average Rating: {{book.get('averageRating', 'N/A')}}</p>
+        </li>
+        </ul>
+    {% else %}
+        <p>No result found.</p>
+        <a href="/">New search</a>
+    {% endif %}
+{% endblock %}

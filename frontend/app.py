@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, NotFoundError
 from dotenv import load_dotenv
 import os
 
@@ -19,17 +19,30 @@ def home():
 
     return render_template('search.html', num_books=num_books)
 
+@app.route('/view', methods=['POST'])
+def view():
+    book_id = request.form.get('book_id')
+    
+    try:
+        response = client.get(index="books", id=book_id)
+        book = response['_source']
+    except NotFoundError:
+        book = None
+        
+    return render_template('view.html', book=book)
+
 @app.route('/search', methods=['POST'])
 def search():
     query = request.form.get('query')
+    previously_viewed_books = request.form.get('previously_viewed_books')
     option = request.form.get('option').lower()
 
     if (option == 'option1'):
-        body = option1(query)
+        body = option1(query, previously_viewed_books)
     elif (option == 'option2'):
-        body = option2(query)
+        body = option2(query, previously_viewed_books)
     elif (option == 'option3'):
-        body = option3(query)
+        body = option3(query, previously_viewed_books)
 
     response = client.search(index="books", body=body)
     results = [hit["_source"] for hit in response['hits']['hits']]
@@ -49,7 +62,7 @@ def search():
     return render_template('results.html', query=query, option=option, results=results, num_results=num_results)
 
 
-def option1(query):
+def option1(query, previously_viewed_books):
     body = {
         "query": {
             "bool": {
@@ -62,10 +75,10 @@ def option1(query):
                 "minimum_should_match": 1,
             }
         },
-        "size": 10,
+        "size": 100,
     }
     return body
-def option2(query):
+def option2(query, previously_viewed_books):
     body = {
         "query": {
             "match_all": {}
@@ -73,7 +86,7 @@ def option2(query):
         "size": 10
     }
     return body
-def option3(query):
+def option3(query, previously_viewed_books):
     body = {
         "query": {
             "match_all": {}

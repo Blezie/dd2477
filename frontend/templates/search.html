@@ -7,14 +7,36 @@
         <h1 class="center">Search</h1>
         
         <form class="center" action="/search" method="post">
-            <input type="text" name="query" placeholder="Enter search query" required>
-            <select name="option">
-                <option value="option1">Option1</option>
-                <option value="option2">Option2</option>
-                <option value="option3">Option3</option>
-            </select>
-            <button type="submit">Search</button>
+            <div class="form-row">
+                <input type="text" name="query" placeholder="Enter search query" required>
+            </div>
+            <div class="form-row">
+                <input type="text" name="previously_viewed_books" placeholder="Previously read books id (separated by commas)">
+            </div>
+            <div class="form-row">
+                <select name="option">
+                    <option value="option1">Option1</option>
+                    <option value="option2">Option2</option>
+                    <option value="option3">Option3</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <button type="submit">Search</button>
+            </div>
         </form>
         <p class="center">Total number of books: {{ num_books }}</p>
+    </div>
+
+    <div class="container">
+        <h1 class="center">View</h1>
+        
+        <form class="center" action="/view" method="post">
+            <div class="form-row">
+                <input type="text" name="book_id" placeholder="Enter book id" required>
+            </div>
+            <div class="form-row">
+                <button type="submit">View book</button>
+            </div>
+        </form>
     </div>
 {% endblock %}
