@@ -10,20 +10,21 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
 
-def convert_json_to_df(json_data):
-    df = pd.json_normalize(json_data)
-    return df
+# def convert_json_to_df(json_data):
+#     df = pd.json_normalize(json_data)
+#     return df
 
 
 def get_onehot_encoded_data(data, column):
+    print("get_onehot_encoded_data", data[column].head())
     one_hot = pd.get_dummies(data[column].apply(pd.Series).stack()).groupby(level=0).sum()
     data = data.drop(columns=[column])
     return pd.concat([data, one_hot], axis=1)
 
 
 class ModelHandler:
-    model = XGBRegressor(enable_categorical=True)
-    path = "./models/"
+    model = None
+    path = "../ml/models/"
     # scaler = StandardScaler()
     # pca = PCA()
     X_columns = None
@@ -33,12 +34,13 @@ class ModelHandler:
 
     def get_model(self, model_type, prereviewed_data=None):
         self.path = self.path + model_type
+
         if os.path.isfile(self.path + ".pkl"):
             print("Loading model")
             self.load_model()
         else:
             if model_type == "XGB":
-                self.model = XGBRegressor()
+                self.model = XGBRegressor(enable_categorical=True)
             elif model_type == "RF":
                 self.model = RandomForestRegressor()
             elif model_type == "LR":
@@ -54,18 +56,23 @@ class ModelHandler:
         print(f"Model score: {score}")
 
     def predict_rating(self, data):
-        print(data.dtypes)
-        return self.model.predict(data)
+        # print(data.dtypes)
+        data, nan_indeces = self.preprocess(data)
+        return self.model.predict(data), nan_indeces
 
     def save_model(self):
+
         with open(self.path + ".pkl", 'wb') as file:
             pickle.dump(self.model, file)
         with open(self.path + "_columns.pkl", 'wb') as file:
             pickle.dump(self.X_columns, file)
 
     def load_model(self):
+        print("Loading model")
+        print(self.path + ".pkl")
         with open(self.path + ".pkl", 'rb') as file:
             self.model = pickle.load(file)
+            print("Model loaded")
         with open(self.path + "_columns.pkl", 'rb') as file:
             self.X_columns = pickle.load(file)
 
@@ -79,10 +86,14 @@ class ModelHandler:
     #     return self.pca.transform(data)
 
     def preprocess(self, data, training=False):
-        df = convert_json_to_df(data)
-        # columns = ["genres", "averageRating", "numPages", "score"]
-        # df = df[columns]
+        # df = convert_json_to_df(data)
+        df = pd.DataFrame(data)
+        columns = ["genres", "averageRating", "numPages"]
+        df = df[columns]
+        dropped_indexes = df.index[df.isna().any(axis=1)].tolist()
         df.dropna(inplace=True)
+        if df.empty:
+            return None
         encoded = get_onehot_encoded_data(df, "genres")
         if training:
             y = encoded["score"]
@@ -90,8 +101,10 @@ class ModelHandler:
             self.X_columns = X.columns
             return X, y
         else:
+            print("X columns: ", self.X_columns)
+
             encoded = encoded.reindex(columns=self.X_columns, fill_value=0)
-            return encoded
+            return encoded, dropped_indexes
 
 
 if __name__ == "__main__":

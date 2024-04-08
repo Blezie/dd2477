@@ -3,6 +3,10 @@ from elasticsearch import Elasticsearch, NotFoundError
 from dotenv import load_dotenv
 import os
 
+import sys
+sys.path.append("..")
+from ml.model_handler import *
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -11,6 +15,9 @@ ELASTIC_API_KEY = os.getenv("ELASTIC_API_KEY")
 ELASTIC_URL = os.getenv("ELASTIC_URL")
 
 client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, ca_certs="../http_ca.crt")
+
+# Can make more flexible by passing in the model type as a parameter
+model_handler = ModelHandler("XGB")
 
 
 @app.route('/')
@@ -46,6 +53,7 @@ def search():
 
     response = client.search(index="books", body=body)
     results = [hit["_source"] for hit in response['hits']['hits']]
+    sortby_relevance_score(results)
     num_results = len(results)
 
     # Debug - print book results in the console
@@ -94,6 +102,21 @@ def option3(query, previously_read_books):
         "size": 100
     }
     return body
+
+def sortby_relevance_score(books):
+    results, nan_indices = model_handler.predict_rating(books)
+
+    i = 0
+    inc = 0
+    while i < len(results):
+        if i in nan_indices:
+            books[i + inc]["relevance_score"] = 0
+            inc += 1
+        books[i+inc]["relevance_score"] = results[i]
+        i += 1
+    books.sort(key=lambda x: x["relevance_score"], reverse=True)
+    return books
+
 
 
 if __name__ == '__main__':
