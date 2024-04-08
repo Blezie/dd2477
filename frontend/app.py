@@ -59,7 +59,7 @@ def search():
     #     print(f"Average Rating: {book.get('averageRating', 'N/A')}")
     #     print("-" * 40)
 
-    return render_template('results.html', query=query, option=option, results=results, num_results=num_results)
+    return render_template('results.html', query=query, previously_viewed_books=previously_viewed_books, option=option, results=results, num_results=num_results)
 
 
 def option1(query, previously_viewed_books):
