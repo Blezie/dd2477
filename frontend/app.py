@@ -34,15 +34,15 @@ def view():
 @app.route('/search', methods=['POST'])
 def search():
     query = request.form.get('query')
-    previously_viewed_books = request.form.get('previously_viewed_books')
+    previously_read_books = request.form.get('previously_read_books')
     option = request.form.get('option').lower()
 
     if (option == 'option1'):
-        body = option1(query, previously_viewed_books)
+        body = option1(query, previously_read_books)
     elif (option == 'option2'):
-        body = option2(query, previously_viewed_books)
+        body = option2(query, previously_read_books)
     elif (option == 'option3'):
-        body = option3(query, previously_viewed_books)
+        body = option3(query, previously_read_books)
 
     response = client.search(index="books", body=body)
     results = [hit["_source"] for hit in response['hits']['hits']]
@@ -59,10 +59,10 @@ def search():
     #     print(f"Average Rating: {book.get('averageRating', 'N/A')}")
     #     print("-" * 40)
 
-    return render_template('results.html', query=query, previously_viewed_books=previously_viewed_books, option=option, results=results, num_results=num_results)
+    return render_template('results.html', query=query, previously_read_books=previously_read_books, option=option, results=results, num_results=num_results)
 
 
-def option1(query, previously_viewed_books):
+def option1(query, previously_read_books):
     body = {
         "query": {
             "bool": {
@@ -78,7 +78,7 @@ def option1(query, previously_viewed_books):
         "size": 100,
     }
     return body
-def option2(query, previously_viewed_books):
+def option2(query, previously_read_books):
     body = {
         "query": {
             "match_all": {}
@@ -86,7 +86,7 @@ def option2(query, previously_viewed_books):
         "size": 10
     }
     return body
-def option3(query, previously_viewed_books):
+def option3(query, previously_read_books):
     body = {
         "query": {
             "match_all": {}
