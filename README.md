@@ -65,7 +65,7 @@ cd ./ml
 pip install xgboost scikit-learn pandas
 ```
 ```bash
-python .\model_handler.py
+python model_handler.py
 ```
 ## Frontend
 
@@ -74,7 +74,7 @@ python .\model_handler.py
 cd ./frontend
 ```
 ```bash
-pip install Flask python-dotenv elasticsearch 
+pip install Flask python-dotenv elasticsearch xgboost scikit-learn pandas
 ```
 ```bash
 python app.py
