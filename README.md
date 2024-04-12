@@ -55,6 +55,17 @@ pip install requests python-dotenv beautifulsoup4 elasticsearch
 python scraper.py --store <option> # option: local | elastic
 ```
 
+## Machine learning
+
+##### How to run:
+```bash
+cd ./frontend
+```
+```bash
+pip install xgboost scikit-learn pandas
+
+```
+
 ## Frontend
 
 ##### How to run:

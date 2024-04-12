@@ -4,5 +4,4 @@ http_ca.crt
 # Ignore .env
 .env
 
-.idea
 ml/models/

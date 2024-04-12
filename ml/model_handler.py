@@ -109,15 +109,15 @@ class ModelHandler:
 
 if __name__ == "__main__":
 
-    with open('../books/books.ndjson', 'r', encoding="utf-8") as file:
-        # Read each line (JSON object) from the file
-        json_objects = []
-        for line in file.readlines():
-            # Parse the JSON object
-            data = json.loads(line)
+    # with open('../books/books.ndjson', 'r', encoding="utf-8") as file:
+    #     # Read each line (JSON object) from the file
+    #     json_objects = []
+    #     for line in file.readlines():
+    #         # Parse the JSON object
+    #         data = json.loads(line)
 
-            # Process the data as needed
-            json_objects.append(data)
+    #         # Process the data as needed
+    #         json_objects.append(data)
 
     model = ModelHandler("XGB", json_objects)
 

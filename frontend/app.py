@@ -2,10 +2,9 @@ from flask import Flask, request, render_template
 from elasticsearch import Elasticsearch, NotFoundError
 from dotenv import load_dotenv
 import os
-
 import sys
-sys.path.append("..")
-from ml.model_handler import *
+sys.path.append("../")
+from ml.model_handler import ModelHandler
 
 load_dotenv()
 
@@ -16,7 +15,6 @@ ELASTIC_URL = os.getenv("ELASTIC_URL")
 
 client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, ca_certs="../http_ca.crt")
 
-# Can make more flexible by passing in the model type as a parameter
 model_handler = ModelHandler("XGB")
 
 
@@ -42,6 +40,7 @@ def view():
 def search():
     query = request.form.get('query')
     previously_read_books = request.form.get('previously_read_books')
+
     option = request.form.get('option').lower()
 
     if (option == 'option1'):
@@ -53,7 +52,9 @@ def search():
 
     response = client.search(index="books", body=body)
     results = [hit["_source"] for hit in response['hits']['hits']]
-    sortby_relevance_score(results)
+    
+    # We need to sort the results by relevance score - we do not have relevance_score in the results yet
+    # sortby_relevance_score(results)
     num_results = len(results)
 
     # Debug - print book results in the console
@@ -71,21 +72,31 @@ def search():
 
 
 def option1(query, previously_read_books):
+    if previously_read_books:
+        excluded_books = previously_read_books.split(",")
+        must_not_clause = {"ids": {"values": excluded_books}}
+    else:
+        must_not_clause = {"match_none": {}}
+
     body = {
         "query": {
-            "bool": {
-                "should": [
-                    {"match": {"genres": query}}, 
-                    {
-                        "match": {"description": query}
-                    },
+            "bool": { # Boolean query combining various conditions
+                "should": [ # "Should" clause for conditions that increase relevancy score if matched
+                    {"multi_match": { # Searches across multiple fields
+                        "query": query, # The user's search term(s)
+                        "fields": ["genres^2", "description"], # Fields to search in, with boost factor of 2 for genres
+                        "type": "best_fields", # Use the best matching field to calculate the document score
+                        "fuzziness": "AUTO" # Allow for automatic fuzziness based on the length of the term
+                    }},
                 ],
-                "minimum_should_match": 1,
+                "must_not": must_not_clause, # Clause to exclude documents (e.g., previously read books)
+                "minimum_should_match": 1, # Require at least one "should" clause to match
             }
         },
-        "size": 100,
+        "size": 5000,  # Return up to x results
     }
     return body
+
 def option2(query, previously_read_books):
     body = {
         "query": {
@@ -116,7 +127,6 @@ def sortby_relevance_score(books):
         i += 1
     books.sort(key=lambda x: x["relevance_score"], reverse=True)
     return books
-
 
 
 if __name__ == '__main__':
