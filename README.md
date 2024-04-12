@@ -59,13 +59,14 @@ python scraper.py --store <option> # option: local | elastic
 
 ##### How to run:
 ```bash
-cd ./frontend
+cd ./ml
 ```
 ```bash
 pip install xgboost scikit-learn pandas
-
 ```
-
+```bash
+python .\model_handler.py
+```
 ## Frontend
 
 ##### How to run:
