@@ -16,6 +16,7 @@
                 <p>Book ID: {{ result['legacyId'] }}</p>
                 <p>Genres: {{', '.join(result.get('genres'))}}</p>
                 <p>Average Rating: {{result.get('averageRating', 'N/A')}}</p>
+                <p>Relevance Score: {{result.get('relevance_score', 'N/A')}}</p>
             </li>
         {% endfor %}
         </ul>

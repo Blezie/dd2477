@@ -3,5 +3,3 @@ http_ca.crt
 
 # Ignore .env
 .env
-
-ml/models/

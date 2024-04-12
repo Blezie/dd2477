@@ -42,6 +42,16 @@ def search():
     previously_read_books = request.form.get('previously_read_books')
 
     option = request.form.get('option').lower()
+    model_type = request.form.get('model').lower()
+
+    if (model_type == 'model1'):
+        model_type = 'XGB'
+    elif (model_type == 'model2'):
+        model_type = 'RF'
+    elif (model_type == 'model3'):
+        model_type = 'LR'
+
+    model = ModelHandler(model_type)
 
     if (option == 'option1'):
         body = option1(query, previously_read_books)
@@ -53,10 +63,10 @@ def search():
     response = client.search(index="books", body=body)
     results = [hit["_source"] for hit in response['hits']['hits']]
     
-    # We need to sort the results by relevance score - we do not have relevance_score in the results yet
-    # sortby_relevance_score(results)
-    num_results = len(results)
+    if (option == 'option2'):
+        results = sortby_relevance_score(model, results)
 
+    num_results = len(results)
     # Debug - print book results in the console
     # for book in results:
     #     print(f"Book ID: {book['legacyId']}")
@@ -98,11 +108,28 @@ def option1(query, previously_read_books):
     return body
 
 def option2(query, previously_read_books):
+    if previously_read_books:
+        excluded_books = previously_read_books.split(",")
+        must_not_clause = {"ids": {"values": excluded_books}}
+    else:
+        must_not_clause = {"match_none": {}}
+
     body = {
         "query": {
-            "match_all": {}
+            "bool": { # Boolean query combining various conditions
+                "should": [ # "Should" clause for conditions that increase relevancy score if matched
+                    {"multi_match": { # Searches across multiple fields
+                        "query": query, # The user's search term(s)
+                        "fields": ["genres^2", "description"], # Fields to search in, with boost factor of 2 for genres
+                        "type": "best_fields", # Use the best matching field to calculate the document score
+                        "fuzziness": "AUTO" # Allow for automatic fuzziness based on the length of the term
+                    }},
+                ],
+                "must_not": must_not_clause, # Clause to exclude documents (e.g., previously read books)
+                "minimum_should_match": 1, # Require at least one "should" clause to match
+            }
         },
-        "size": 10
+        "size": 5000,  # Return up to x results
     }
     return body
 def option3(query, previously_read_books):
@@ -114,17 +141,21 @@ def option3(query, previously_read_books):
     }
     return body
 
-def sortby_relevance_score(books):
+def sortby_relevance_score(model, books):
     results, nan_indices = model_handler.predict_rating(books)
-
-    i = 0
-    inc = 0
-    while i < len(results):
+    if len(results) == 0:
+        return books
+   
+    # print("nan_indices", nan_indices)
+    res_ind = 0
+    for i in range(len(books)):
         if i in nan_indices:
-            books[i + inc]["relevance_score"] = 0
-            inc += 1
-        books[i+inc]["relevance_score"] = results[i]
-        i += 1
+            books[i]["relevance_score"] = 0
+            continue
+        books[i]["relevance_score"] = results[res_ind]
+        res_ind += 1
+
+    
     books.sort(key=lambda x: x["relevance_score"], reverse=True)
     return books
 

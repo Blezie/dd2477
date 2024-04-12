@@ -29,7 +29,7 @@ class ModelHandler:
     # pca = PCA()
     X_columns = None
 
-    def __init__(self, model_type, prereviewed_data=None):
+    def __init__(self, model_type="XGB", prereviewed_data=None):
         self.get_model(model_type, prereviewed_data)
 
     def get_model(self, model_type, prereviewed_data=None):
@@ -88,7 +88,9 @@ class ModelHandler:
     def preprocess(self, data, training=False):
         # df = convert_json_to_df(data)
         df = pd.DataFrame(data)
-        columns = ["genres", "averageRating", "numPages"]
+        columns = ["genres", "averageRating", "numPages", "ratingsCount"]
+        if training:
+            columns.append("user_score")
         df = df[columns]
         dropped_indexes = df.index[df.isna().any(axis=1)].tolist()
         df.dropna(inplace=True)
@@ -96,34 +98,32 @@ class ModelHandler:
             return None
         encoded = get_onehot_encoded_data(df, "genres")
         if training:
-            y = encoded["score"]
-            X = encoded.drop(columns=["score"])
+            y = encoded["user_score"]
+            X = encoded.drop(columns=["user_score"])
             self.X_columns = X.columns
             return X, y
         else:
-            print("X columns: ", self.X_columns)
-
             encoded = encoded.reindex(columns=self.X_columns, fill_value=0)
             return encoded, dropped_indexes
 
 
 if __name__ == "__main__":
 
-    # with open('../books/books.ndjson', 'r', encoding="utf-8") as file:
-    #     # Read each line (JSON object) from the file
-    #     json_objects = []
-    #     for line in file.readlines():
-    #         # Parse the JSON object
-    #         data = json.loads(line)
+    with open('./bookUserReviews.ndjson', 'r', encoding="utf-8") as file:
+         # Read each line (JSON object) from the file
+         json_objects = []
+         for line in file.readlines():
+             # Parse the JSON object
+             data = json.loads(line)
 
-    #         # Process the data as needed
-    #         json_objects.append(data)
+             # Process the data as needed
+             json_objects.append(data)
 
     model = ModelHandler("XGB", json_objects)
 
-    test = model.preprocess(json.loads(
-        """{"genres": ["Fantasy", "Young Adult", "Fiction", "Magic", "Audiobook", "Adventure", "Science Fiction 
-        Fantasy"], "numPages": 200, "averageRating": 1.58 }"""
-    ))
-    res = model.predict_rating(test)
-    print(res)
+    # test = model.preprocess(json.loads(
+    #     """{"genres": ["Fantasy", "Young Adult", "Fiction", "Magic", "Audiobook", "Adventure", "Science Fiction 
+    #     Fantasy"], "numPages": 200, "averageRating": 1.58 }"""
+    # ))
+    # res = model.predict_rating(test)
+    # print(res) 
