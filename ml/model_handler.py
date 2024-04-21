@@ -50,7 +50,7 @@ class ModelHandler:
             self.save_model()
 
     def train_model(self, X, y):
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
         self.model.fit(X_train, y_train)
         score = self.model.score(X_test, y_test)
         print(f"Model score: {score}")
@@ -58,6 +58,7 @@ class ModelHandler:
     def predict_rating(self, data):
         # print(data.dtypes)
         data, nan_indeces = self.preprocess(data)
+        data = data.fillna(data.mean())
         return self.model.predict(data), nan_indeces
 
     def save_model(self):
@@ -76,14 +77,6 @@ class ModelHandler:
         with open(self.path + "_columns.pkl", 'rb') as file:
             self.X_columns = pickle.load(file)
 
-    # def preprocess_data(self, data, training=False):
-    #     if training:
-    #         self.scaler.fit(data)
-    #         data = self.scaler.transform(data)
-    #         self.pca.fit(data)
-    #     else:
-    #         data = self.scaler.transform(data)
-    #     return self.pca.transform(data)
 
     def preprocess(self, data, training=False):
         # df = convert_json_to_df(data)
@@ -98,6 +91,7 @@ class ModelHandler:
             return None
         encoded = get_onehot_encoded_data(df, "genres")
         if training:
+            encoded.dropna(inplace=True)
             y = encoded["user_score"]
             X = encoded.drop(columns=["user_score"])
             self.X_columns = X.columns
@@ -119,11 +113,5 @@ if __name__ == "__main__":
              # Process the data as needed
              json_objects.append(data)
 
-    model = ModelHandler("XGB", json_objects)
+    model = ModelHandler("LR", json_objects)
 
-    # test = model.preprocess(json.loads(
-    #     """{"genres": ["Fantasy", "Young Adult", "Fiction", "Magic", "Audiobook", "Adventure", "Science Fiction 
-    #     Fantasy"], "numPages": 200, "averageRating": 1.58 }"""
-    # ))
-    # res = model.predict_rating(test)
-    # print(res) 

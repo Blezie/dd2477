@@ -13,14 +13,17 @@ app = Flask(__name__)
 ELASTIC_API_KEY = os.getenv("ELASTIC_API_KEY")
 ELASTIC_URL = os.getenv("ELASTIC_URL")
 
+INDEX = "books2"
+
 client = Elasticsearch(ELASTIC_URL, api_key=ELASTIC_API_KEY, ca_certs="../http_ca.crt")
 
 model_handler = ModelHandler("XGB")
 
+# Index: /books2 | /books_lm_dirichlet | /books_tf (tf-idf) | /books_dft (dfr)
 
 @app.route('/')
 def home():
-    num_books = client.count(index='books')['count']
+    num_books = client.count(index=INDEX)['count']
 
     return render_template('search.html', num_books=num_books)
 
@@ -29,7 +32,7 @@ def view():
     book_id = request.form.get('book_id')
     
     try:
-        response = client.get(index="books", id=book_id)
+        response = client.get(index=INDEX, id=book_id)
         book = response['_source']
     except NotFoundError:
         book = None
@@ -43,7 +46,11 @@ def search():
 
     option = request.form.get('option').lower()
     model_type = request.form.get('model').lower()
+    ranking = request.form.get('ranking').lower()
 
+    INDEX = ranking
+    print("INDEX", INDEX)
+    
     if (model_type == 'model1'):
         model_type = 'XGB'
     elif (model_type == 'model2'):
@@ -60,13 +67,17 @@ def search():
     elif (option == 'option3'):
         body = option3(query, previously_read_books)
 
-    response = client.search(index="books", body=body)
+    response = client.search(index=INDEX, body=body)
+    #print("response", response)
     results = [hit["_source"] for hit in response['hits']['hits']]
+    #print("results", results)
     
     if (option == 'option2'):
-        results = sortby_relevance_score(model, results)
+        if len(results) != 0:
+            results = sortby_relevance_score(model, results)
 
     num_results = len(results)
+    #print("num_results", num_results)
     # Debug - print book results in the console
     # for book in results:
     #     print(f"Book ID: {book['legacyId']}")
@@ -78,7 +89,7 @@ def search():
     #     print(f"Average Rating: {book.get('averageRating', 'N/A')}")
     #     print("-" * 40)
 
-    return render_template('results.html', query=query, previously_read_books=previously_read_books, option=option, results=results, num_results=num_results)
+    return render_template('results.html', query=query, previously_read_books=previously_read_books, option=option, ranking=ranking, results=results, num_results=num_results)
 
 
 def option1(query, previously_read_books):
@@ -94,7 +105,7 @@ def option1(query, previously_read_books):
                 "should": [ # "Should" clause for conditions that increase relevancy score if matched
                     {"multi_match": { # Searches across multiple fields
                         "query": query, # The user's search term(s)
-                        "fields": ["genres^2", "description"], # Fields to search in, with boost factor of 2 for genres
+                        "fields": ["genres^2", "description", "title^2"], # Fields to search in, with boost factor of 2 for genres
                         "type": "best_fields", # Use the best matching field to calculate the document score
                         "fuzziness": "AUTO" # Allow for automatic fuzziness based on the length of the term
                     }},
@@ -103,7 +114,7 @@ def option1(query, previously_read_books):
                 "minimum_should_match": 1, # Require at least one "should" clause to match
             }
         },
-        "size": 5000,  # Return up to x results
+        "size": 15,  # Return up to x results
     }
     return body
 
@@ -120,7 +131,7 @@ def option2(query, previously_read_books):
                 "should": [ # "Should" clause for conditions that increase relevancy score if matched
                     {"multi_match": { # Searches across multiple fields
                         "query": query, # The user's search term(s)
-                        "fields": ["genres^2", "description"], # Fields to search in, with boost factor of 2 for genres
+                        "fields": ["genres", "description^2", "title^2"], # Fields to search in, with boost factor of 2 for genres
                         "type": "best_fields", # Use the best matching field to calculate the document score
                         "fuzziness": "AUTO" # Allow for automatic fuzziness based on the length of the term
                     }},
@@ -129,7 +140,7 @@ def option2(query, previously_read_books):
                 "minimum_should_match": 1, # Require at least one "should" clause to match
             }
         },
-        "size": 5000,  # Return up to x results
+        "size": 15,  # Return up to x results
     }
     return body
 def option3(query, previously_read_books):
@@ -137,12 +148,12 @@ def option3(query, previously_read_books):
         "query": {
             "match_all": {}
         },
-        "size": 100
+        "size": 1000
     }
     return body
 
 def sortby_relevance_score(model, books):
-    results, nan_indices = model_handler.predict_rating(books)
+    results, nan_indices = model.predict_rating(books)
     if len(results) == 0:
         return books
    
