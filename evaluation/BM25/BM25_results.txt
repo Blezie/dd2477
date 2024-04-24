@@ -1,0 +1,95 @@
+---------------------------------------------------------------------------------------------------------
+
+Query: Harry Potter books 1-7
+
+---------------------------------------------------------------------------------------------------------
+
+using option 1: returns 15 results
+
+1. 8 - Harry Potter Boxed Set, Books 1-5 * 3
+2. 7 - The Harry Potter Collection * 3
+3. 10 - Harry Potter Collection * 3
+4. 2 - Harry Potter and the Order of the Phoenix * 2
+5. 3 - Harry Potter and the Sorcerer's Stone * 2
+6. 5 - Harry Potter and the Prisoner of Azkaban * 2
+7. 6 - Harry Potter and the Goblet of Fire * 2
+8. 1 - Harry Potter and the Half-Blood Prince * 2
+9. 9 - Unauthorized Harry Potter Book Seven News: "Half-Blood Prince" Analysis and Speculation * 1
+10. 870 - Fullmetal Alchemist, Vol. 1 * 0
+11. 723 - Chord Workbook for Guitar: Volume 1 * 0
+12. 237 - Poetry for Young People: Edward Lear * 0
+13. 55 - Hatchet Jobs: Writings on Contemporary Fiction * 0
+14. 889 - Escape From Pompeii * 0
+15. 239 - An Edward Lear Alphabet * 0
+
+---------------------------------------------------------------------------------------------------------
+
+Query: Guide to the Galaxy
+
+---------------------------------------------------------------------------------------------------------
+
+using option 1: returns 15 results
+
+1. 16 - The Hitchhiker's Guide to the Galaxy * 3
+2. 11 - The Hitchhiker’s Guide to the Galaxy * 3
+3. 14 - The Hitchhiker's Guide to the Galaxy * 3
+4. 18 - The Ultimate Hitchhiker's Guide * 3
+5. 13 - The Ultimate Hitchhiker’s Guide to the Galaxy * 3
+6. 19 - The Hitchhiker's Guide to the Galaxy: The Quintessential Phase * 3
+7. 17 - The Hitchhiker's Guide to the Galaxy: Quandary Phase * 3
+8. 18 - The Ultimate Hitchhiker's Guide * 3
+9. 12 - The Ultimate Hitchhiker's Guide: Five Complete Novels and One Story * 3
+10. 377 - The Salmon of Doubt: Hitchhiking the Galaxy One Last Time * 3
+11. 373 - The Salmon of Doubt: Hitchhiking the Galaxy One Last Time * 3
+12. 376 - The Salmon of Doubt: Hitchhiking the Galaxy One Last Time * 3
+13. 359 - The Salmon of Doubt: Hitchhiking the Galaxy One Last Time * 3
+14. 372 - The Salmon of Doubt: Hitchhiking the Galaxy One Last Time * 2
+15. 792 - London: City Guide * 0
+
+---------------------------------------------------------------------------------------------------------
+
+Query: Lord of the Rings
+
+---------------------------------------------------------------------------------------------------------
+
+using option 1: returns 15 results
+
+1. 31 - The Lord of the Rings * 3
+2. 35 - The Lord of the Rings * 3
+3. 39 - The Lord of the Rings * 3
+4. 32 - The Lord of the Rings * 3
+5. 33 - The Lord of the Rings * 3
+6. 36 - The Lord of the Rings: Weapons and Warfare * 3
+7. 38 - The Lord of the Rings Box Set * 3
+8. 37 - The Lord of the Rings: Complete Visual Companion * 3
+9. 30 - J.R.R. Tolkien 4-Book Boxed Set: The Hobbit and The Lord of the Rings * 3
+10. 34 - The Fellowship of the Ring * 3
+11. 526 - Lord of the Flies * 0
+12. 528 - Lord of the Flies * 0
+13. 524 - Lord of the Flies * 0
+14. 525 - Lord of the Flies * 0
+15. 530 - Lord of the Flies * 0
+
+---------------------------------------------------------------------------------------------------------
+
+Query: wizard fantasy
+
+---------------------------------------------------------------------------------------------------------
+
+using option 1: returns 15 results
+
+1. 7 - The Harry Potter Collection * 3
+2. 10 - Harry Potter Collection * 3
+3. 877 - Cambridge Wizard Student Guide: The Kite Runner - 0
+4. 3 - Harry Potter and the Sorcerer's Stone * 3
+5. 494 - Wizard: The Life and Times of Nikola Tesla: Biography of a Genius * 0
+6. 219 - The Machine in Ward Eleven * 0
+7. 30 - J.R.R. Tolkien 4-Book Boxed Set: The Hobbit and The Lord of the Rings * 2
+8. 240 - Edward Lear's Nonsense Verse * 0
+9. 990 - A Storm Without Rain: A Novel in Time
+10. 32 - The Lord of the Rings * 2
+11. 33 - The Lord of the Rings * 2
+12. 34 - The Fellowship of the Ring * 2
+13. 38 - The Lord of the Rings Box Set * 2
+14. 831 - Snow Crash * 0
+15. 31 - The Lord of the Rings * 2

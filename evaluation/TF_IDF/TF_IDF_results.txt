@@ -1,0 +1,73 @@
+---------------------------------------------------------------------------------------------------------
+
+Query: Harry Potter books 1-7
+
+---------------------------------------------------------------------------------------------------------
+
+using option 1: returns 15 results
+
+1. 8 - Harry Potter Boxed Set, Books 1-5 * 3
+2. 10 - Harry Potter Collection * 3
+3. 7 - The Harry Potter Collection * 3
+4. 3 - Harry Potter and the Sorcerer's Stone * 2
+5. 1 - Harry Potter and the Half-Blood Prince * 2
+6. 5 - Harry Potter and the Prisoner of Azkaban * 2
+7. 6 - Harry Potter and the Goblet of Fire * 2
+8. 9 - Unauthorized Harry Potter Book Seven News: "Half-Blood Prince" Analysis and Speculation * 1
+9. 2 - Harry Potter and the Order of the Phoenix * 2
+10. 870 - Fullmetal Alchemist, Vol. 1 * 0
+11. 723 - Chord Workbook for Guitar: Volume 1 * 0
+12. 55 - Hatchet Jobs: Writings on Contemporary Fiction * 0
+13. 239 - An Edward Lear Alphabet * 0
+14. 23 - Bryson's Dictionary of Troublesome Words: A Writer's Guide to Getting It Right * 0
+15. 237 - Poetry for Young People: Edward Lear * 0
+
+
+---------------------------------------------------------------------------------------------------------
+
+Query: Guide to the Galaxy
+
+---------------------------------------------------------------------------------------------------------
+
+using option 1: returns 15 results
+
+1. 14 - The Hitchhiker's Guide to the Galaxy * 3
+2. 16 - The Hitchhiker’s Guide to the Galaxy * 3
+3. 11 - The Hitchhiker’s Guide to the Galaxy * 3
+4. 13 - The Ultimate Hitchhiker’s Guide to the Galaxy * 3
+5. 17 - The Hitchhiker's Guide to the Galaxy: Quandary Phase * 3
+6. 19 - The Hitchhiker's Guide to the Galaxy: The Quintessential Phase * 3
+7. 672 - Sailing for Dummies * 0
+8. 133 - eBay for Dummies * 0
+9. 786 - The Rough Guide to London * 0
+10. 633 - The Complete Idiot's Guide to Motorcycles * 0
+11. 788 - The Rough Guide to London Restaurants 2004 * 0
+12. 684 - Biology: A Guide to the Natural World * 0
+13. 731 - Guide to Guitar Chord Progressions * 0
+14. 15 - The Hitchhiker's Guide to Lean: Lessons from the Road * 0
+15. 559 - The Compleat Gentleman: The Modern Man's Guide to Chivalry * 0
+
+---------------------------------------------------------------------------------------------------------
+
+Query: Lord of the Rings
+
+---------------------------------------------------------------------------------------------------------
+
+using option 1: returns 15 results
+
+1. 31 - The Lord of the Rings * 3
+2. 35 - The Lord of the Rings * 3
+3. 39 - The Lord of the Rings * 3
+4. 32 - The Lord of the Rings * 3
+5. 33 - The Lord of the Rings * 3
+6. 38 - The Lord of the Rings Box Set * 3
+7. 36 - The Lord of the Rings: Weapons and Warfare * 3
+8. 37 - The Lord of the Rings: Complete Visual Companion * 3
+9. 30 - J.R.R. Tolkien 4-Book Boxed Set: The Hobbit and The Lord of the Rings * 3
+10. 526 - Lord of the Flies * 0
+11. 528 - Lord of the Flies * 0
+12. 524 - Lord of the Flies * 0
+13. 525 - Lord of the Flie * 0
+14. 530 - Lord of the Flies * 0
+15. 34 - The Fellowship of the Ring * 3
+

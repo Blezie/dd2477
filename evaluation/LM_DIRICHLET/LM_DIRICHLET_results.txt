@@ -1,0 +1,75 @@
+---------------------------------------------------------------------------------------------------------
+
+Query: Harry Potter books 1-7
+
+---------------------------------------------------------------------------------------------------------
+
+using option 1: returns 15 results
+
+1. 8 - Harry Potter Boxed Set, Books 1-5 * 3
+2. 6 - Harry Potter and the Goblet of Fire * 2
+3. 55 - Hatchet Jobs: Writings on Contemporary Fiction * 0
+4. 3 - Harry Potter and the Sorcerer's Stone * 2
+5. 5 - Harry Potter and the Prisoner of Azkaban * 2
+6. 7 - The Harry Potter Collection * 3
+7. 10 - Harry Potter Collection * 3
+8. 2 - Harry Potter and the Order of the Phoenix * 2
+9. 239 - An Edward Lear Alphabet * 0
+10. 23 - Bryson's Dictionary of Troublesome Words: A Writer's Guide to Getting It Right * 0
+11. 1 - Harry Potter and the Half-Blood Prince * 2
+12. 237 - Poetry for Young People: Edward Lear * 0
+13. 329 - What if the Zebras Lost Their Stripes? * 0
+14. 334 - "A" Is for Zebra * 0
+15. 159 - Dinner with Anna Karenina * 0
+
+
+---------------------------------------------------------------------------------------------------------
+
+Query: Guide to the Galaxy
+
+---------------------------------------------------------------------------------------------------------
+
+using option 1: returns 15 results
+
+1. 672 - Sailing for Dummies * 0
+2. 133 - eBay for Dummies * 0
+3. 14 - The Hitchhiker's Guide to the Galaxy * 3
+4. 11 - The Hitchhiker’s Guide to the Galaxy * 3
+5. 19 - The Hitchhiker's Guide to the Galaxy: The Quintessential Phase * 3
+6. 18 - The Ultimate Hitchhiker's Guide * 3
+7. 12 - The Ultimate Hitchhiker's Guide: Five Complete Novels and One Story * 3
+8. 13 - The Ultimate Hitchhiker’s Guide to the Galaxy * 3
+9. 17 - The Hitchhiker's Guide to the Galaxy: Quandary Phase * 3
+10. 377 - The Salmon of Doubt: Hitchhiking the Galaxy One Last Time * 3
+11. 360 - Mostly Harmless
+12. 359 - The Salmon of Doubt: Hitchhiking the Galaxy One Last Time * 3
+13. 376 - The Salmon of Doubt: Hitchhiking the Galaxy One Last Time * 3
+14. 464 - Collected Poems * 0
+15. 461 - The Inner Life of Martin Frost * 0
+
+---------------------------------------------------------------------------------------------------------
+
+Query: Lord of the Rings
+
+---------------------------------------------------------------------------------------------------------
+
+using option 1: returns 15 results
+
+1. 33 - The Lord of the Rings * 3
+2. 35 - The Lord of the Rings * 3
+3. 32 - The Lord of the Rings * 3
+4. 38 - The Lord of the Rings Box Set * 3
+5. 39 - The Lord of the Rings * 3
+6. 30 - J.R.R. Tolkien 4-Book Boxed Set: The Hobbit and The Lord of the Rings * 3
+7. 34 - The Fellowship of the Ring * 3
+8. 37 - The Lord of the Rings: Complete Visual Companion * 3
+9. 464 - Collected Poems * 0
+10. The Inner Life of Martin Frost * 0
+11. 36 - The Lord of the Rings: Weapons and Warfare * 3
+12. 231 - I Am Charlotte Simmons * 0
+13. 232 - I Am Charlotte Simmons * 0
+14. 25 - I'm a Stranger Here Myself: Notes on Returning to America After Twenty Years Away * 0
+15. 26 - The Lost Continent: Travels in Small-Town America * 0
+
+
+
